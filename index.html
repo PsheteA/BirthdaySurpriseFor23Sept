@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For My Love ❤️</title>
+    <meta name="theme-color" content="#f8d9e4" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        background: #fff8f7;
+        color: #39252d;
+        overflow-x: hidden;
+      }
+      button {
+        font: inherit;
+      }
+      .page {
+        min-height: 100vh;
+        display: none;
+        position: relative;
+        overflow: hidden;
+        padding: 28px 18px 55px;
+      }
+      .page.active {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .soft-bg {
+        background:
+          radial-gradient(circle at 15% 15%, #ffdfe9 0 5%, transparent 25%),
+          radial-gradient(circle at 85% 25%, #ffe9c9 0 5%, transparent 24%),
+          linear-gradient(135deg, #fffaf8, #fff1f5);
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+      .script {
+        font-family: "Brush Script MT", "Segoe Script", cursive;
+      }
+      .small {
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
+      .muted {
+        color: #765d66;
+      }
+      .btn {
+        border: 0;
+        border-radius: 999px;
+        padding: 14px 24px;
+        cursor: pointer;
+        background: #c84d72;
+        color: white;
+        box-shadow: 0 8px 22px #c84d7235;
+        transition: 0.25s;
+        margin: 8px;
+      }
+      .btn:hover {
+        transform: translateY(-2px) scale(1.02);
+      }
+      .btn.secondary {
+        background: #fff;
+        color: #a4385d;
+        border: 1px solid #efb4c5;
+      }
+      .envelope {
+        width: min(360px, 86vw);
+        height: 235px;
+        position: relative;
+        margin: 25px auto 30px;
+        cursor: pointer;
+        filter: drop-shadow(0 18px 20px #7f3b4b22);
+      }
+      .env-back {
+        position: absolute;
+        inset: 0;
+        background: #e98da8;
+        border-radius: 12px;
+      }
+      .env-front {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 72%;
+        background: #f2a6bb;
+        clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+        border-radius: 0 0 12px 12px;
+      }
+      .env-flap {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 62%;
+        background: #f7b7c9;
+        clip-path: polygon(0 0, 100% 0, 50% 78%);
+        transform-origin: top;
+        transition: 1s;
+        z-index: 3;
+        border-radius: 12px 12px 0 0;
+      }
+      .envelope.open .env-flap {
+        transform: rotateX(180deg);
+        z-index: 0;
+      }
+      .seal {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -10%);
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: #b92f5c;
+        color: white;
+        display: grid;
+        place-items: center;
+        font-size: 25px;
+        z-index: 4;
+      }
+      .floating-heart {
+        position: absolute;
+        animation: float 6s linear infinite;
+        opacity: 0.65;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) rotate(0);
+          opacity: 0;
+        }
+        15% {
+          opacity: 0.7;
+        }
+        100% {
+          transform: translateY(-15vh) rotate(25deg);
+          opacity: 0;
+        }
+      }
+      .gift {
+        width: 180px;
+        height: 150px;
+        background: #df6d92;
+        position: relative;
+        border-radius: 8px;
+        margin: 22px auto 28px;
+        box-shadow: 0 20px 30px #a53c5a30;
+        cursor: pointer;
+      }
+      .gift:before {
+        content: "";
+        position: absolute;
+        left: 72px;
+        top: 0;
+        width: 35px;
+        height: 100%;
+        background: #ffd16d;
+      }
+      .gift:after {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: -20px;
+        width: 200px;
+        height: 35px;
+        background: #ef88a6;
+        border-radius: 8px;
+      }
+      .bow {
+        position: absolute;
+        left: 50%;
+        top: -50px;
+        transform: translateX(-50%);
+        font-size: 70px;
+        z-index: 3;
+      }
+      .card {
+        width: min(920px, 100%);
+        background: #fffdfb;
+        border: 1px solid #f0d9df;
+        border-radius: 28px;
+        padding: 28px;
+        box-shadow: 0 20px 60px #7d43501a;
+      }
+      .reveal-title {
+        text-align: center;
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        color: #8f244b;
+        line-height: 1;
+      }
+      .reveal-sub {
+        text-align: center;
+        font-size: 1.35rem;
+        color: #c34e70;
+      }
+      .quote {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        text-align: center;
+        max-width: 760px;
+        margin: 20px auto;
+      }
+      .scrapbook {
+        width: min(1100px, 100%);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+      .note {
+        padding: 24px;
+        border-radius: 8px;
+        min-height: 150px;
+        box-shadow: 0 10px 22px #5b374015;
+        transform: rotate(-1deg);
+        background: #ffe5b9;
+      }
+      .note:nth-child(2) {
+        background: #ffd3df;
+        transform: rotate(1.5deg);
+      }
+      .note:nth-child(3) {
+        background: #e8defc;
+        transform: rotate(-2deg);
+      }
+      .note:nth-child(4) {
+        background: #dff2df;
+        transform: rotate(1deg);
+      }
+      .note:nth-child(5) {
+        background: #fff0a8;
+        transform: rotate(-1deg);
+      }
+      .note:nth-child(6) {
+        background: #f4d9c6;
+        transform: rotate(2deg);
+      }
+      .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-top: 24px;
+      }
+      .photo-slot {
+        min-height: 240px;
+        border-radius: 20px;
+        background: #fff;
+        border: 2px dashed #e5aabc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+      .photo-slot img {
+        width: 100%;
+        height: 100%;
+        min-height: 240px;
+        object-fit: cover;
+        display: block;
+      }
+      .photo-label {
+        padding: 20px;
+        text-align: center;
+        color: #a36a79;
+      }
+      .final {
+        background: radial-gradient(
+          circle at 50% 20%,
+          #fff,
+          #ffe9ef 55%,
+          #f9ccd9
+        );
+        text-align: center;
+      }
+      .big-heart {
+        font-size: 76px;
+        animation: pulse 1.7s infinite;
+      }
+      @keyframes pulse {
+        50% {
+          transform: scale(1.13);
+        }
+      }
+      .cake {
+        font-size: 80px;
+        margin: 10px;
+      }
+      .signature {
+        font-size: 1.4rem;
+        color: #8e3151;
+      }
+      .progress {
+        position: fixed;
+        left: 50%;
+        bottom: 12px;
+        transform: translateX(-50%);
+        z-index: 50;
+        background: #ffffffdd;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        color: #7c5360;
+        backdrop-filter: blur(6px);
+      }
+      .dots span {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #d9a8b6;
+        margin: 0 3px;
+      }
+      .dots span.on {
+        background: #a83d60;
+        width: 9px;
+        height: 9px;
+      }
+      .music {
+        position: fixed;
+        right: 14px;
+        top: 14px;
+        z-index: 60;
+        width: 44px;
+        height: 44px;
+        border: 0;
+        border-radius: 50%;
+        background: #fff;
+        color: #a83d60;
+        box-shadow: 0 5px 18px #5d334022;
+        cursor: pointer;
+      }
+      @media (max-width: 760px) {
+        .scrapbook,
+        .photo-grid {
+          grid-template-columns: 1fr;
+        }
+        .page {
+          padding-top: 45px;
+        }
+        .card {
+          padding: 20px;
+        }
+        .photo-slot,
+        .photo-slot img {
+          min-height: 300px;
+        }
+      }
+      @media (min-width: 761px) {
+        .photo-slot {
+          min-height: 310px;
+        }
+        .photo-slot img {
+          min-height: 310px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="music" id="musicBtn" title="Music">♫</button>
+    <audio id="music" loop preload="none">
+      <!-- Optional: put your own song at music/birthday-song.mp3 and uncomment the src below -->
+      <!-- <source src="music/birthday-song.mp3" type="audio/mpeg"> -->
+    </audio>
+
+    <div id="hearts"></div>
+
+    <section class="page active soft-bg" id="p1">
+      <div class="card" style="text-align: center">
+        <div class="script" style="font-size: 2rem; color: #b63e62">
+          A tiny surprise for you…
+        </div>
+        <div class="envelope" id="envelope" onclick="openEnvelope()">
+          <div class="env-back"></div>
+          <div class="env-front"></div>
+          <div class="env-flap"></div>
+          <div class="seal">♥</div>
+        </div>
+        <h1 style="font-size: clamp(2rem, 7vw, 4rem); margin-bottom: 8px">
+          Hey You… ❤️
+        </h1>
+        <p class="quote">
+          Someone has prepared a little surprise for you.<br /><b
+            >Are you ready to open it?</b
+          >
+        </p>
+        <button class="btn" onclick="openEnvelope()">
+          💌 Open My Surprise
+        </button>
+      </div>
+    </section>
+
+    <section class="page soft-bg" id="p2">
+      <div class="card" style="text-align: center">
+        <div class="script" style="font-size: 2rem; color: #b63e62">
+          One tiny promise…
+        </div>
+        <div class="gift" onclick="nextPage()"><div class="bow">🎀</div></div>
+        <h2 style="font-size: 2.2rem">Before you open this…</h2>
+        <p class="quote">
+          Promise me you'll smile first. 🥹❤️<br />Because this little surprise
+          was made only for you.
+        </p>
+        <button class="btn" onclick="nextPage()">🎀 Untie the Ribbon</button>
+      </div>
+    </section>
+
+    <section class="page soft-bg" id="p3">
+      <div class="card">
+        <div
+          class="script"
+          style="text-align: center; font-size: 2rem; color: #b63e62"
+        >
+          And now…
+        </div>
+        <h1 class="reveal-title">Happy Birthday</h1>
+        <div class="reveal-sub">Aniket ❤️</div>
+        <p class="quote">
+          I could have simply said “Happy Birthday”…<br />
+          but you deserve more than just two words.
+        </p>
+        <div style="text-align: center">✨ ❤️ ✨</div>
+        <div style="text-align: center; margin-top: 20px">
+          <button class="btn" onclick="nextPage()">✨ Read What I Feel</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page soft-bg" id="p4">
+      <div style="width: min(1100px, 100%)">
+        <div class="card" style="margin-bottom: 22px; text-align: center">
+          <div class="script" style="font-size: 2rem; color: #b63e62">
+            A few reasons…
+          </div>
+          <h2 style="font-size: 2.6rem; color: #8f244b">Why You? ❤️</h2>
+          <p class="small muted">
+            Not a complete list… because I'd need a whole website for that. 😉
+          </p>
+        </div>
+        <div class="scrapbook">
+          <div class="note">
+            <h3>♥ Your Kind Heart</h3>
+            <p>
+              You make people feel cared for in ways you probably don't even
+              notice.
+            </p>
+          </div>
+          <div class="note">
+            <h3>♥ Your Beautiful Soul</h3>
+            <p>
+              There is something about you that makes ordinary moments feel
+              special.
+            </p>
+          </div>
+          <div class="note">
+            <h3>♥ Your Crazy Dreams</h3>
+            <p>
+              I hope this year takes you closer to every dream you've been
+              carrying.
+            </p>
+          </div>
+          <div class="note">
+            <h3>♥ The Way You Make Me Smile</h3>
+            <p>Some smiles are automatic. Yours is one of them.</p>
+          </div>
+          <div class="note">
+            <h3>♥ My Favourite Person</h3>
+            <p>Somehow, “you” became one of my favourite parts of every day.</p>
+          </div>
+          <div class="note">
+            <h3>♥ Simply… You</h3>
+            <p>
+              No big explanation. No perfect words. Just you. And I'm grateful.
+            </p>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px">
+          <button class="btn" onclick="nextPage()">
+            📸 Our Little Memories
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page soft-bg" id="p5">
+      <div style="width: min(1100px, 100%)">
+        <div class="card" style="text-align: center">
+          <div class="script" style="font-size: 2rem; color: #b63e62">
+            Our little memories
+          </div>
+          <h2 style="font-size: 2.6rem; color: #8f244b">
+            Moments I Want To Keep ❤️
+          </h2>
+        </div>
+
+        <div class="photo-grid">
+          <div class="photo-slot">
+            <img src="photos/photo1.jpg" alt="Our memory 1" />
+          </div>
+          <div class="photo-slot">
+            <img src="photos/photo2.jpg" alt="Our memory 2" />
+          </div>
+          <div class="photo-slot">
+            <img src="photos/photo3.jpg" alt="Our memory 2" />
+          </div>
+          <div class="photo-slot">
+            <img src="photos/photo4.jpg" alt="Our memory 2" />
+          </div>
+          <div class="photo-slot">
+            <img src="photos/photo5.jpeg" alt="Our memory 2" />
+          </div>
+          <div class="photo-slot">
+            <img src="photos/photo6.jpeg" alt="Our memory 2" />
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 22px; text-align: center">
+          <p class="quote">
+            “The best memories aren't always the biggest moments. Sometimes
+            they're the little moments that quietly become our favourite ones.”
+          </p>
+          <button class="btn" onclick="nextPage()">💗 One Last Thing…</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page final" id="p6">
+      <div class="card" style="background: #ffffffc9">
+        <div class="big-heart">❤️</div>
+        <div class="script" style="font-size: 2.2rem; color: #b63e62">
+          One last thing…
+        </div>
+        <h1 style="font-size: clamp(2.3rem, 7vw, 4.5rem); color: #8f244b">
+          In every version of my life,
+        </h1>
+        <p class="quote" style="font-size: 1.45rem">
+          I'd still choose to meet you.
+        </p>
+        <p class="quote">
+          May your dreams come true, your heart always be light,<br />
+          your days be filled with love, your mind with peace,<br />
+          and your life with all the good things you deserve.
+        </p>
+        <div class="cake">🎂</div>
+        <h2 class="script" style="font-size: 2.6rem; color: #a9345b">
+          Happy Birthday, My Love ❤️
+        </h2>
+        <p class="signature">Here's to another year of you, me, and us. ♾️</p>
+        <p class="small muted">Thank you for being you.</p>
+        <button class="btn" onclick="goTo(1)">
+          💗 Replay Our Little Story
+        </button>
+      </div>
+    </section>
+
+    <div class="progress"><div class="dots" id="dots"></div></div>
+
+    <script>
+      let current = 1;
+      const total = 6;
+      const pages = [...document.querySelectorAll(".page")];
+      const dots = document.getElementById("dots");
+
+      for (let i = 1; i <= total; i++) {
+        const s = document.createElement("span");
+        s.id = "dot" + i;
+        dots.appendChild(s);
+      }
+      updateDots();
+
+      function goTo(n) {
+        pages[current - 1].classList.remove("active");
+        current = n;
+        pages[current - 1].classList.add("active");
+        updateDots();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      function nextPage() {
+        goTo(Math.min(total, current + 1));
+      }
+      function updateDots() {
+        for (let i = 1; i <= total; i++)
+          document
+            .getElementById("dot" + i)
+            .classList.toggle("on", i === current);
+      }
+      function openEnvelope() {
+        document.getElementById("envelope").classList.add("open");
+        setTimeout(() => goTo(2), 850);
+      }
+
+      for (let i = 0; i < 22; i++) {
+        const h = document.createElement("div");
+        h.className = "floating-heart";
+        h.textContent = ["♥", "♡", "❤", "✦"][Math.floor(Math.random() * 4)];
+        h.style.left = Math.random() * 100 + "vw";
+        h.style.animationDelay = Math.random() * 6 + "s";
+        h.style.fontSize = 12 + Math.random() * 22 + "px";
+        h.style.color = ["#d95c80", "#e9a2b5", "#c47a91"][
+          Math.floor(Math.random() * 3)
+        ];
+        document.getElementById("hearts").appendChild(h);
+      }
+
+      const music = document.getElementById("music");
+      const musicBtn = document.getElementById("musicBtn");
+      let playing = false;
+      musicBtn.onclick = () => {
+        if (!music.querySelector("source")) {
+          alert(
+            'To add music: put your song in the "music" folder as birthday-song.mp3, then uncomment the source line in index.html.',
+          );
+          return;
+        }
+        if (playing) {
+          music.pause();
+          musicBtn.textContent = "♫";
+        } else {
+          music.play();
+          musicBtn.textContent = "❚❚";
+        }
+        playing = !playing;
+      };
+    </script>
+  </body>
+</html>
